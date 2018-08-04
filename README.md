@@ -19,7 +19,7 @@ t3().evaluate('now');
 ```
 `evaluate()` is the main function of Text to Time. It takes in the text as a parameter and returns an object as follows:
 
-```json
+```
 {
     timestamp: the timestamp evaluated from the expression, 
     now: the current timestamp, for relative expressions,
