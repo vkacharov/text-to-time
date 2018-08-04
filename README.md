@@ -19,7 +19,7 @@ t3().evaluate('now');
 ```
 `evaluate()` is the main function of Text to Time. It takes in the text as a parameter and returns an object as follows:
 
-```json
+```
 {
     timestamp: the timestamp evaluated from the expression, 
     now: the current timestamp, for relative expressions,
@@ -88,6 +88,7 @@ Text to Time is cabable of resolving the following dates in different formats. T
 * 08.22.2018
 * 08/22/2018
 * 22/08/2018
+
 Text to Time implies which is the date and which the month depending on their value.
 
 ## Time operations
