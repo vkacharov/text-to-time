@@ -1,6 +1,6 @@
 {
   "name": "text-to-time",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Text To Time npm module",
   "main": "index.js",
   "scripts": {
@@ -23,14 +23,14 @@
   },
   "devDependencies": {
     "mocha": "^5.2.0"
-  }, 
+  },
   "keywords": [
     "text to time",
-    "text", 
-    "time", 
-    "evaluate", 
-    "parse", 
-    "date", 
+    "text",
+    "time",
+    "evaluate",
+    "parse",
+    "date",
     "before",
     "after"
   ]
