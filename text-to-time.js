@@ -19,15 +19,26 @@ const textToTime = function() {
         return this;
     }
 
-    this.evaluate = function(expression) {
-        return {
-            now: this._now, 
-            timeZone: this._timeZone, 
-            timestamp: evaluate.evaluate(expression, {
-                now: this._now, 
-                timeZone: this._timeZone
-            })
-        }
+    this.evaluate = function(expression, callback) {
+        let _now = this._now;
+        let _timeZone = this._timeZone;
+
+        evaluate.evaluate(expression, {
+            now: _now, 
+            timeZone: _timeZone
+        }, (err, result) => {
+            if (err) {
+                callback({
+                    message: err.message
+                });
+            } else {
+                callback(undefined, {
+                    now: _now,
+                    timeZone: _timeZone, 
+                    timestamp: result
+                });
+            }
+        });
     }
 
     return this;

@@ -12,12 +12,19 @@ npm install text-to-time
 ```
 
 ## Usage
-Start with the basics
+Let's start with the basics
 ```javascript
 const t3 = require('text-to-time');
-t3().evaluate('now');
+let callback = (err, evaluated) => {
+    if (err) {
+        console.error(err);
+    } else {
+        console.log(evaluated);
+    }
+};
+t3().evaluate('now', callback);
 ```
-`evaluate()` is the main function of Text to Time. It takes in the text as a parameter and returns an object as follows:
+`evaluate()` is the main function of Text to Time. It takes in the text and a callback function. The callback argument `evaluated` is the result of the evaluation in the following format:
 
 ```
 {
@@ -31,13 +38,13 @@ t3().evaluate('now');
 Text to Time evaluates expressions relative to the current time. Let's assume the current moment is `2018-08-04 22:00:00 UTC`. 
 
 ```javascript
-t3().evaluate('now');
+t3().evaluate('now', callback);
 // { timestamp: 1533335400000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('yesterday');
+t3().evaluate('yesterday', callback);
 // { timestamp: 1533333600000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('tomorrow');
+t3().evaluate('tomorrow', callback);
 // { timestamp: 1533506400000, now: 1533420000000, timeZone: 'UTC' }
 ```
 
@@ -45,11 +52,11 @@ t3().evaluate('tomorrow');
 Use `now()` to change the current time related to which the expression is evaluated.
 
 ```javascript
-t3().evaluate('yesterday');
+t3().evaluate('yesterday', callback);
 // { timestamp: 1533333600000, now: 1533420000000, timeZone: 'UTC' }
 
 let someDifferentNow = 1533335400000; // 2017-08-09 12:15:00 UTC 
-t3().now(someDifferentNow).evaluate('yesterday'); 
+t3().now(someDifferentNow).evaluate('yesterday', callback); 
 // { timestamp: 1502194500000, now: 1502280900000, timeZone: 'UTC' }
 ```
 
@@ -57,13 +64,13 @@ t3().now(someDifferentNow).evaluate('yesterday');
 Text to Time evaluates expressions describing precise point in time. It supports all kinds of expressions. 
 
 ```javascript
-t3().evaluate('2018-08-01 at 13:22:10');
+t3().evaluate('2018-08-01 at 13:22:10', callback);
 // { timestamp: 1533043330000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('3:25:00 AM on 08/22/2018');
+t3().evaluate('3:25:00 AM on 08/22/2018', callback);
 // { timestamp: 1534821900000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('3:25:00 AM on 17 June 2018');
+t3().evaluate('3:25:00 AM on 17 June 2018', callback);
 // { timestamp: 1529119500000, now: 1533420000000, timeZone: 'UTC' }
 
 ```
@@ -73,10 +80,10 @@ Because they define absolute point in time `now()` is not used in these expressi
 ### .timeZone()
 Use `.timeZone()` to set the time zone of the expression.
 ```javascript
-t3().evaluate('today at 4');
+t3().evaluate('today at 4', callback);
 // { now: 1533420000000, timeZone: 'UTC', timestamp: 1533355200000 }
 
-t3().timeZone('PT').evaluate('today at 4');
+t3().timeZone('PT').evaluate('today at 4', callback);
 // { timestamp: 1533351600000, now: 1533420000000, timeZone: 'PT' }
 
 ```
@@ -95,25 +102,25 @@ Text to Time implies which is the date and which the month depending on their va
 Text to Time calculates time operations like *ago*, *before*, *after*, *at*, *on*, *past*. 
 
 ```javascript
-t3().evaluate('3 days ago');
+t3().evaluate('3 days ago', callback);
 // { timestamp: 1533160800000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('15 minutes before tomorrow at 1 PM');
+t3().evaluate('15 minutes before tomorrow at 1 PM', callback);
 // { timestamp: 1533473100000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('quarter to 11 PM on 04.08.2018');
+t3().evaluate('quarter to 11 PM on 04.08.2018', callback);
 // { timestamp: 1533336300000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('3 hours after now');
+t3().evaluate('3 hours after now', callback);
 // { timestamp: 1533430800000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('half past 3 AM on 22.08.2018');
+t3().evaluate('half past 3 AM on 22.08.2018', callback);
 // { timestamp: 1534822200000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('5 days and 5 hours from yesterday');
+t3().evaluate('5 days and 5 hours from yesterday', callback);
 // { timestamp: 1533783600000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().evaluate('3 hours before 01 August 2018 at 13:00');
+t3().evaluate('3 hours before 01 August 2018 at 13:00', callback);
 // { timestamp: 1533031200000, now: 1533420000000, timeZone: 'UTC' }
 ```
 

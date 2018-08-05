@@ -1,5 +1,5 @@
 var assert = require('assert');
-var evaluate = require('../lib/evaluate.js');
+var t3 = require('../text-to-time.js');
 
 describe('evaluate', function() {
     describe('test relative time periods', function() {
@@ -18,8 +18,10 @@ describe('evaluate', function() {
 
         equivalentToNowExpressions.forEach(e => {
             it ('"' + e + '" should be equivalent to now', function() {
-                let evaluated = evaluate.evaluate(e, {now:now});
-                assert.equal(evaluated, now);
+                t3().now(now).evaluate(e, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, now);
+                });
+                
             });
         });
     });
@@ -46,8 +48,10 @@ describe('evaluate', function() {
         ];
         equivalentDates.forEach(d => {
             it ('"' + d + '" should be equivalent to 24.07.2018 at 16:15:00', function() {
-                let evaluated = evaluate.evaluate(d, {now: new Date().getTime()});
-                assert.equal(evaluated, expected);
+                t3().now(new Date().getTime()).timeZone('').evaluate(d, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, expected);
+                });
+                
             });
         });
     });
@@ -72,9 +76,26 @@ describe('evaluate', function() {
 
         equivalentDates.forEach(d => {
             it ('"' + d.value + '" should be equivalent to ' + d.expected, function() {
-                let evaluated = evaluate.evaluate(d.value, {now: new Date().getTime()});
-                assert.equal(evaluated, d.expected);
+                t3().now(new Date().getTime()).timeZone('').evaluate(d.value, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, d.expected);
+                });
             });
         });
     });
+
+    describe('test errors' , function() {
+        let wrongExpressions = [
+            '1 hour 4 minutes before 3 hours', 
+            'before today', 
+            '2 hours and 05.01.2018'
+        ];
+
+        wrongExpressions.forEach(w => {
+            it (w + ' is invalid', function() {
+                t3().evaluate(w, (err, evaluated) => {
+                    assert(err);
+                });
+            });
+        });
+    }); 
 });
