@@ -1,10 +1,10 @@
-var assert = require('assert');
-var t3 = require('../text-to-time.js');
+const assert = require('assert');
 
 describe('evaluate', function() {
     describe('test relative time periods', function() {
-        var now = new Date().getTime();
+        let t3 = require('../text-to-time.js');
 
+        var now = new Date().getTime();
         let equivalentToNowExpressions = [
             'now', 
             'today',
@@ -18,6 +18,7 @@ describe('evaluate', function() {
 
         equivalentToNowExpressions.forEach(e => {
             it ('"' + e + '" should be equivalent to now', function() {
+                
                 t3().now(now).evaluate(e, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, now);
                 });
@@ -27,13 +28,11 @@ describe('evaluate', function() {
     });
 
     describe('test absolute dates', function(){
-        let date = new Date();
-        date.setDate(24);
-        date.setMonth(6);
-        date.setYear(2018);
-        date.setHours(16,15,0,0);
-        
+        let t3 = require('../text-to-time.js');
+
+        let date = new Date(Date.UTC(2018, 6, 24, 16, 15, 0, 0));
         let expected = date.getTime();
+
         let equivalentDates = [
             '24.07.2018 at 16:15:00',
             '16:15:00 on 24.07.2018', 
@@ -48,7 +47,7 @@ describe('evaluate', function() {
         ];
         equivalentDates.forEach(d => {
             it ('"' + d + '" should be equivalent to 24.07.2018 at 16:15:00', function() {
-                t3().now(new Date().getTime()).timeZone('').evaluate(d, (err, evaluated) => {
+                t3().evaluate(d, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, expected);
                 });
                 
@@ -57,10 +56,11 @@ describe('evaluate', function() {
     });
 
     describe('test am/pm', function() {
+        let t3 = require('../text-to-time.js');
 
         let todayAtHours = (hours) => {
-            let date = new Date();
-            date.setHours(hours, 0, 0, 0);
+            let now = new Date();
+            let date = new Date(Date.UTC(now.getFullYear(), now.getUTCMonth(), now.getUTCDate(), hours));
             return date.getTime();
         }
 
@@ -76,14 +76,63 @@ describe('evaluate', function() {
 
         equivalentDates.forEach(d => {
             it ('"' + d.value + '" should be equivalent to ' + d.expected, function() {
-                t3().now(new Date().getTime()).timeZone('').evaluate(d.value, (err, evaluated) => {
+                t3().now(new Date().getTime()).evaluate(d.value, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, d.expected);
                 });
             });
         });
     });
 
+    describe('test date format', function() {
+        let t3 = require('../text-to-time.js');
+        
+        let date = new Date(Date.UTC(2018, 6, 4));
+        let expected = date.getTime();
+
+        let equivalentDates = [
+            {text: '04.07.2018', format: 'DD.MM.YYYY'}, 
+            {text: '4.7.2018', format: 'D.M.YYYY'}, 
+            {text: '4 July 2018', fotmat: 'D MMM YYYY'}, 
+            {text: '2018 on July 4th', format: 'YYYY on MMM Dth'}, 
+            {text: '0:0:0 on 7/4/2018', format: 'M/D/YYYY'},
+        ];
+
+        equivalentDates.forEach(d => {
+            it('"' + d.text + '" should be equivalent to 04.07.2018', function() {
+                t3().dateFormat(d.format).evaluate(d.text, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, expected);
+                });
+                
+            });
+        });
+    });
+
+    describe('test time zone', function() {
+        let t3 = require('../text-to-time.js');
+
+        let date = new Date(Date.UTC(2018, 4, 6, 16, 15, 24));
+        let expected = date.getTime();
+        
+        let equivalentDates = [
+            {text: '06 May 2018 at 19:15:24', timeZone: 'Europe/Sofia'}, 
+            {text: '06 May 2018 at 18:15:24', timeZone: 'Europe/Berlin'},
+            {text: '06 May 2018 at 17:15:24', timeZone: 'Europe/Dublin'},
+            {text: '06 May 2018 at 16:15:24', timeZone: 'UTC'},
+        ];
+
+        equivalentDates.forEach(d => {
+            it ('"' + d.text + '" in ' + d.timeZone + ' should be equvalent to 06 May 2018 at 16:15:24 UTC', function() {
+                t3().timeZone(d.timeZone).evaluate(d.text, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, expected);
+                    assert.equal(evaluated.timeZone, d.timeZone);
+                });
+            });
+        });
+    });
+
     describe('test errors' , function() {
+        let t3 = require('../text-to-time.js');
+
         let wrongExpressions = [
             '1 hour 4 minutes before 3 hours', 
             'before today', 
@@ -92,7 +141,7 @@ describe('evaluate', function() {
 
         wrongExpressions.forEach(w => {
             it (w + ' is invalid', function() {
-                t3().evaluate(w, (err, evaluated) => {
+                t3().evaluate(w, (err) => {
                     assert(err);
                 });
             });
