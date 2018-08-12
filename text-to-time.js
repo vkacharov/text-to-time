@@ -18,14 +18,21 @@ const textToTime = function() {
 
         return this;
     }
+    
+    this.dateFormat = function(dateFormat) {
+        this._dateFormat = dateFormat;
+        return this;
+    }
 
     this.evaluate = function(expression, callback) {
         let _now = this._now;
         let _timeZone = this._timeZone;
+        let _dateFormat = this._dateFormat;
 
         evaluate.evaluate(expression, {
             now: _now, 
-            timeZone: _timeZone
+            timeZone: _timeZone, 
+            dateFormat: _dateFormat,
         }, (err, result) => {
             if (err) {
                 callback({

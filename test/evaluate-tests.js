@@ -27,11 +27,7 @@ describe('evaluate', function() {
     });
 
     describe('test absolute dates', function(){
-        let date = new Date();
-        date.setDate(24);
-        date.setMonth(6);
-        date.setYear(2018);
-        date.setHours(16,15,0,0);
+        let date = new Date(Date.UTC(2018, 6, 24, 16, 15, 0, 0));
         
         let expected = date.getTime();
         let equivalentDates = [
@@ -48,7 +44,7 @@ describe('evaluate', function() {
         ];
         equivalentDates.forEach(d => {
             it ('"' + d + '" should be equivalent to 24.07.2018 at 16:15:00', function() {
-                t3().now(new Date().getTime()).timeZone('').evaluate(d, (err, evaluated) => {
+                t3().evaluate(d, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, expected);
                 });
                 
@@ -57,10 +53,9 @@ describe('evaluate', function() {
     });
 
     describe('test am/pm', function() {
-
         let todayAtHours = (hours) => {
-            let date = new Date();
-            date.setHours(hours, 0, 0, 0);
+            let now = new Date();
+            let date = new Date(Date.UTC(now.getFullYear(), now.getUTCMonth(), now.getUTCDate(), hours));
             return date.getTime();
         }
 
@@ -76,9 +71,31 @@ describe('evaluate', function() {
 
         equivalentDates.forEach(d => {
             it ('"' + d.value + '" should be equivalent to ' + d.expected, function() {
-                t3().now(new Date().getTime()).timeZone('').evaluate(d.value, (err, evaluated) => {
+                t3().now(new Date().getTime()).evaluate(d.value, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, d.expected);
                 });
+            });
+        });
+    });
+
+    describe('test date format', function() {
+        let date = new Date(Date.UTC(2018, 6, 4));
+        
+        let expected = date.getTime();
+        let equivalentDates = [
+            {text: '04.07.2018', format: 'DD.MM.YYYY'}, 
+            {text: '4.7.2018', format: 'D.M.YYYY'}, 
+            {text: '4 July 2018', fotmat: 'D MMM YYYY'}, 
+            {text: '2018 on July 4th', format: 'YYYY on MMM Dth'}, 
+            {text: '0:0:0 on 7/4/2018', format: 'M/D/YYYY'},
+        ];
+
+        equivalentDates.forEach(d => {
+            it('"' + d.text + '" should be equivalent to 04.07.2018', function() {
+                t3().dateFormat(d.format).evaluate(d.text, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, expected);
+                });
+                
             });
         });
     });
@@ -92,7 +109,7 @@ describe('evaluate', function() {
 
         wrongExpressions.forEach(w => {
             it (w + ' is invalid', function() {
-                t3().evaluate(w, (err, evaluated) => {
+                t3().evaluate(w, (err) => {
                     assert(err);
                 });
             });
