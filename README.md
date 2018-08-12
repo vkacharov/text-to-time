@@ -81,14 +81,14 @@ Because they define absolute point in time `now()` is not used in these expressi
 Use `.timeZone()` to set the time zone of the expression.
 ```javascript
 t3().evaluate('today at 4', callback);
-// { now: 1533420000000, timeZone: 'UTC', timestamp: 1533355200000 }
+// { timestamp: 1533355200000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().timeZone('PT').evaluate('today at 4', callback);
-// { timestamp: 1533351600000, now: 1533420000000, timeZone: 'PT' }
+t3().timeZone('America/New_York').evaluate('today at 4', callback);
+// { timestamp: 1533369600000, now: 1533420000000, timeZone: 'America/New_York' }
 
 ```
-### Date resolution
-Text to Time is cabable of resolving the following dates in different formats. The following dates will all be resolved to `22 August 2018` 
+## Date resolution
+Text to Time is cabable of auto-resolving dates in different formats, if the date format is not explicitly set. The following dates will all be resolved to `22 August 2018` 
 * 2018-08-22 
 * 22 August 2018
 * 22.08.2018
@@ -97,6 +97,30 @@ Text to Time is cabable of resolving the following dates in different formats. T
 * 22/08/2018
 
 Text to Time implies which is the date and which the month depending on their value.
+
+### .dateFormat()
+Use `.dateFormat()` to explicitly set the date format. The date format can be any text containing the date format placeholders.
+
+
+| Placeholder   | Meaning                      | Example          |
+| --------------|:----------------------------:| ----------------:|
+| D             | 1 or 2 digit day             | 1, 3, 12, 23     |
+| DD            | 2 digit day                  | 01, 03, 12, 23   |
+| M             | 1 or 2 digit month           | 1, 3, 10, 12     |
+| MM            | 2 digit month                | 01, 03, 10, 12   |
+| MMM           | month name, case insensitive | January, march   |
+| YYYY          | 4 digit year                 | 1986, 2018       |
+
+```javascript
+t3().dateFormat('DD/MM/YYYY').evaluate('01/08/2018 at 16:00:00', callback);
+// { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().dateFormat('D MMM YYYY').evaluate('1 August 2018 at 16:00:00', callback);
+// { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().dateFormat('the day of DD and the month of MMM in the year YYYY').evaluate('the day of 01 and the month of August in the year 2018 at 16:00:00', callback);
+// { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
+```
 
 ## Time operations
 Text to Time calculates time operations like *ago*, *before*, *after*, *at*, *on*, *past*. 

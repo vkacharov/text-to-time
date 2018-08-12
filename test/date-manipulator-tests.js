@@ -3,8 +3,8 @@ var DateManipulator = require('../lib/date-manipulator.js').DateManipulator;
 
 describe('DateManipulator tests', function(){
     describe('constructor', function() {
-        let testDate = new Date('2018-07-26 10:47:04');
-        let testTimestamp = testDate.getTime();
+        let testTimestamp = Date.UTC(2018, 6, 26, 10, 47, 04);
+        let testDate = new Date(testTimestamp);
         let testObject = {
             years: 2018, 
             months: 6, 
@@ -17,15 +17,15 @@ describe('DateManipulator tests', function(){
         let expectedTimestamp = testTimestamp;
 
         let equivalentDates = [
-            // {value: testDate, expected: expectedTimestamp}, 
-            // {value: testDate, expected: expectedTimestamp}, 
-            // {value: testObject, expected: expectedTimestamp}
+            testDate, 
+            testTimestamp, 
+            testObject,
         ]; 
 
         equivalentDates.forEach(e => {
-            it('"' + JSON.stringify(e.value) + '" should be equal to ' + expectedTimestamp, function() {
-                let evaluated = new DateManipulator(e.value).getTime();
-                assert.equal(evaluated, e.expected);
+            it('"' + JSON.stringify(e) + '" should be equal to ' + expectedTimestamp, function() {
+                let evaluated = new DateManipulator(e, 'UTC').getTime();
+                assert.equal(evaluated, expectedTimestamp);
             });
         })
     });
