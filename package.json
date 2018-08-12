@@ -1,6 +1,6 @@
 {
   "name": "text-to-time",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Text To Time npm module",
   "main": "index.js",
   "scripts": {
