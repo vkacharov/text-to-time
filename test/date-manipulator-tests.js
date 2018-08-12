@@ -1,5 +1,5 @@
 var assert = require('assert');
-var DateManipulator = require('../lib/dateUtil.js').DateManipulator;
+var DateManipulator = require('../lib/date-manipulator.js').DateManipulator;
 
 describe('DateManipulator tests', function(){
     describe('constructor', function() {
@@ -17,9 +17,9 @@ describe('DateManipulator tests', function(){
         let expectedTimestamp = testTimestamp;
 
         let equivalentDates = [
-            // {value: testDate, expected: expectedTimestamp}, 
-            // {value: testDate, expected: expectedTimestamp}, 
-            // {value: testObject, expected: expectedTimestamp}
+            {value: testDate, expected: expectedTimestamp}, 
+            {value: testDate, expected: expectedTimestamp}, 
+            {value: testObject, expected: expectedTimestamp}
         ]; 
 
         equivalentDates.forEach(e => {
