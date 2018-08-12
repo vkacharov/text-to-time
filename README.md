@@ -87,6 +87,33 @@ t3().timeZone('America/New_York').evaluate('today at 4', callback);
 // { timestamp: 1533369600000, now: 1533420000000, timeZone: 'America/New_York' }
 
 ```
+
+## Time operations
+Text to Time calculates time operations like *ago*, *before*, *after*, *at*, *on*, *past*. 
+
+```javascript
+t3().evaluate('3 days ago', callback);
+// { timestamp: 1533160800000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('15 minutes before tomorrow at 1 PM', callback);
+// { timestamp: 1533473100000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('quarter to 11 PM on 04.08.2018', callback);
+// { timestamp: 1533336300000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('3 hours after now', callback);
+// { timestamp: 1533430800000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('half past 3 AM on 22.08.2018', callback);
+// { timestamp: 1534822200000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('5 days and 5 hours from yesterday', callback);
+// { timestamp: 1533783600000, now: 1533420000000, timeZone: 'UTC' }
+
+t3().evaluate('3 hours before 01 August 2018 at 13:00', callback);
+// { timestamp: 1533031200000, now: 1533420000000, timeZone: 'UTC' }
+```
+
 ## Date resolution
 Text to Time is cabable of auto-resolving dates in different formats, if the date format is not explicitly set. The following dates will all be resolved to `22 August 2018` 
 * 2018-08-22 
@@ -118,34 +145,9 @@ t3().dateFormat('DD/MM/YYYY').evaluate('01/08/2018 at 16:00:00', callback);
 t3().dateFormat('D MMM YYYY').evaluate('1 August 2018 at 16:00:00', callback);
 // { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
 
-t3().dateFormat('the day of DD and the month of MMM in the year YYYY').evaluate('the day of 01 and the month of August in the year 2018 at 16:00:00', callback);
+t3().dateFormat('the day of DD and the month of MMM in the year YYYY')
+    .evaluate('the day of 01 and the month of August in the year 2018 at 16:00:00', callback);
 // { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
-```
-
-## Time operations
-Text to Time calculates time operations like *ago*, *before*, *after*, *at*, *on*, *past*. 
-
-```javascript
-t3().evaluate('3 days ago', callback);
-// { timestamp: 1533160800000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('15 minutes before tomorrow at 1 PM', callback);
-// { timestamp: 1533473100000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('quarter to 11 PM on 04.08.2018', callback);
-// { timestamp: 1533336300000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('3 hours after now', callback);
-// { timestamp: 1533430800000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('half past 3 AM on 22.08.2018', callback);
-// { timestamp: 1534822200000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('5 days and 5 hours from yesterday', callback);
-// { timestamp: 1533783600000, now: 1533420000000, timeZone: 'UTC' }
-
-t3().evaluate('3 hours before 01 August 2018 at 13:00', callback);
-// { timestamp: 1533031200000, now: 1533420000000, timeZone: 'UTC' }
 ```
 
 ## Fuzzy matching
