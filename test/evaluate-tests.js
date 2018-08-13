@@ -35,6 +35,7 @@ describe('evaluate', function() {
 
         let equivalentDates = [
             '24.07.2018 at 16:15:00',
+            'on 24.07.2018 at 16:15:00',
             '16:15:00 on 24.07.2018', 
             '07.24.2018 at 16:15',
             '24/07/2018 at quarter past 16',
@@ -44,6 +45,7 @@ describe('evaluate', function() {
             '5 minutes from July 24 2018 at 16:10',
             '15 minutes before Jul 24 2018 at half past 16', 
             '2018-07-24 at quarter past sixteen',
+            'on 2018-07-24 at quarter past sixteen',
         ];
         equivalentDates.forEach(d => {
             it ('"' + d + '" should be equivalent to 24.07.2018 at 16:15:00', function() {
