@@ -1,6 +1,6 @@
 {
   "name": "text-to-time",
-  "version": "0.0.3",
+  "version": "1.0.0",
   "description": "Text To Time evaluates free-form, unstructured text to a timestamp.",
   "main": "index.js",
   "scripts": {
