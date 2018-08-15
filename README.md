@@ -138,6 +138,9 @@ Use `.dateFormat()` to explicitly set the date format. The date format can be an
 | MMM           | month name, case insensitive | January, march   |
 | YYYY          | 4 digit year                 | 1986, 2018       |
 
+For example
+
+
 ```javascript
 t3().dateFormat('DD/MM/YYYY').evaluate('01/08/2018 at 16:00:00', callback);
 // { timestamp: 1533139200000, now: 1533420000000, timeZone: 'UTC' }
