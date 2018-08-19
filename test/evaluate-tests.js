@@ -172,7 +172,11 @@ describe('evaluate', function() {
         let wrongExpressions = [
             '1 hour 4 minutes before 3 hours', 
             'before today', 
-            '2 hours and 05.01.2018'
+            '2 hours and 05.01.2018', 
+            '14',
+            'year', 
+            'before', 
+            'April'
         ];
 
         wrongExpressions.forEach(w => {
