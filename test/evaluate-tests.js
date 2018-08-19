@@ -29,7 +29,6 @@ describe('evaluate', function() {
 
     describe('test absolute dates', function(){
         let t3 = require('../text-to-time.js');
-
         let date = new Date(Date.UTC(2018, 6, 24, 16, 15, 0, 0));
         let expected = date.getTime();
 
@@ -46,9 +45,7 @@ describe('evaluate', function() {
             '15 minutes before Jul 24 2018 at half past 16', 
             '2018-07-24 at quarter past sixteen',
             'on 2018-07-24 at quarter past sixteen',
-            'July 24, 2018 at 15 minutes past 16',
-            'July 24 at 16:15',
-            '24.07 at 16:fifteen'
+            'July 24, 2018 at 15 minutes past 16'
         ];
         equivalentDates.forEach(d => {
             it ('"' + d + '" should be equivalent to 24.07.2018 at 16:15:00', function() {
@@ -130,6 +127,40 @@ describe('evaluate', function() {
                 t3().timeZone(d.timeZone).evaluate(d.text, (err, evaluated) => {
                     assert.equal(evaluated.timestamp, expected);
                     assert.equal(evaluated.timeZone, d.timeZone);
+                });
+            });
+        });
+    });
+
+    describe('test date parsing', function() {
+        let t3 = require('../text-to-time.js');
+
+        let currentYear = new Date().getUTCFullYear();
+
+        let expected = Date.UTC(currentYear, 3, 14);
+        let equivalentDates = [
+            '14.04',
+            '14/04',
+            '04.14',
+            '04/14',
+            '14 April',
+            'April 14',
+            '14.04.' + currentYear,
+            '14/04/' + currentYear,
+            '04.14.' + currentYear,
+            '04/14/' + currentYear,
+            '14 April ' + currentYear,
+            'April 14 ' + currentYear,
+            '14 April, ' + currentYear,
+            'April 14, ' + currentYear,
+            '14 April,' + currentYear,
+            'April 14,' + currentYear,
+        ];
+
+        equivalentDates.forEach(d => {
+            it ('"' + d + '" should be equivalent to 04 April ' + currentYear, function() {
+                t3().evaluate(d, (err, evaluated) => {
+                    assert.equal(evaluated.timestamp, expected);
                 });
             });
         });
