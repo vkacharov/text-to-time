@@ -115,15 +115,22 @@ t3().evaluate('3 hours before 01 August 2018 at 13:00', callback);
 ```
 
 ## Date resolution
-Text to Time is cabable of auto-resolving dates in different formats, if the date format is not explicitly set. The following dates will all be resolved to `22 August 2018` 
+Text to Time is cabable of auto-resolving dates in different formats, if the date format is not explicitly set. The following dates will all be resolved to `22 August 2018`. If the year is omitted, Text to Time defaults to the current year.
+
 * 2018-08-22 
 * 22 August 2018
+* 22 August
 * 22.08.2018
+* 22.08
 * 08.22.2018
+* 08.22
 * 08/22/2018
+* 08/22
 * 22/08/2018
+* 22/08
 
-Text to Time implies which is the date and which the month depending on their value.
+
+Text to Time implies the date and the month depending on their value.
 
 ### .dateFormat()
 Use `.dateFormat()` to explicitly set the date format. The date format can be any text containing the date format placeholders.
