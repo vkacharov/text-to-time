@@ -1,5 +1,36 @@
+<div align="center">
+	<h1>text-to-time</h1>
+   <a href="https://www.npmjs.com/package/@ifraan_/text-to-time"><img src="https://badgen.net/npm/v/@ifraan_/text-to-time?color=red" alt="NPM-Version"/></a>
+   <a href="https://www.npmjs.com/package/@ifraan_/text-to-time"><img src="https://badgen.net/npm/dt/@ifraan_/text-to-time?color=red" alt="NPM-Downloads"/></a>
+   <a href="https://github.com/iFraan/text-to-time"><img src="https://badgen.net/github/stars/iFraan/text-to-time?color=green" alt="Github Stars"/></a>
+   <a href="https://github.com/iFraan/text-to-time/issues"><img src="https://badgen.net/github/issues/iFraan/text-to-time?color=green" alt="Issues"/></a>
+</div>
 
+## The soul purpose of this fork its to translate the 'free form text' to spanish. 
+Publishing since it may come in handy for some.
+## Installation
+### Dependencies
+``
+moment moment-timezone words-to-numbers
+``
 
+To install use:
+```shell
+npm i @ifraan_/text-to-time
+```
+
+Example code
+```js
+const text = 'ahora';
+try {
+    const timestamp = await T.toTime(text);
+    console.log(timestamp)
+    /* { now: 1657214873022, timeZone: 'UTC', timestamp: 1657214873022 } */
+} catch (err) {
+    console.log(err)
+    /* invalid word [word] */
+}
+```
 
 # OLD README FOR REFERENCE
 ## Text to Time
