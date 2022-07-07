@@ -1,30 +1,68 @@
 const evaluate = require('./lib/evaluate.js');
 
-const instance = function() {
-    this._now = new Date().getTime();
-    this._timeZone = 'UTC';
+const clearText = (text) => {
+    
+    // Relative???
+    const words = ['en', 'dentro'];
+    for (let i = 0; i < words.length; i++) {
+        const word = words[i];
+        if (text.includes(word)) {
+            text = text + ' now';
+        } else {
+            text = text
+        }
+    }
 
-    this.timeZone = function(timeZone) {
-       this._timeZone = timeZone;
-       return this;
-    } 
+    // phrases to words
+    text = text.replace('a las', 'at')
+    text = text.replace('media hora', '30 minutes')
+    
+    return {
+        text,
+    }
+}
 
-    this.now = function(now) {
+class textToTime {
+    constructor(text) {
+        this.text = text;
+        this._now = new Date().getTime();
+        this._timeZone = 'UTC';
+    }
+    /**
+     * Date.getTime()
+     * @param {Date} now 
+     * @returns 
+     */
+    now(now) {
         if (now instanceof Date) {
             this._now = now.getTime();
         } else if (typeof now == 'number') {
             this._now = now;
         }
+        return this;
+    }
 
+    /**
+     * Sets the timezone (doesnt check if valid)
+     * @param {String} timeZone 
+     * @returns 
+     */
+    timeZone(tz) {
+        this._timeZone = tz;
         return this;
     }
     
-    this.dateFormat = function(dateFormat) {
-        this._dateFormat = dateFormat;
+    /**
+     * 
+     * @param {Date} date 
+     * @returns 
+     */
+    dateFormat(date) {
+        this._dateFormat = date;
         return this;
     }
 
-    this.evaluate = function(expression, callback) {
+    evaluate = (expression, callback) => {
         let _now = this._now;
         let _timeZone = this._timeZone;
         let _dateFormat = this._dateFormat;
@@ -48,10 +86,16 @@ const instance = function() {
         });
     }
 
-    return this;
+    static async toTime(string) {
+        const {text} = clearText(string);
+        return new Promise((res, rej) => {
+            const C = new textToTime(text)
+            C.evaluate(C.text, (err, result) => {
+                if (err) rej(err);
+                res(result);
+            })
+        })
+    }
 }
 
-function textToTime() {
-    return new instance();
-}
 module.exports = textToTime;
