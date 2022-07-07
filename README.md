@@ -1,4 +1,8 @@
-# Text to Time
+
+
+
+# OLD README FOR REFERENCE
+## Text to Time
 Evaluates free-form, unstructured text to a timestamp. Capable of calculating time expressions like 'before', 'after', 'ago', and so on. Returns an object containing the timestamp calcuated from the text. 
 
 Possible use cases:
